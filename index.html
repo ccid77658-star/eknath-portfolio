@@ -1,160 +1,635 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eknath | Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<title>Eknath World | Learn • Create • Explore</title>
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0b1020;
-            color: white;
-            line-height: 1.7;
-        }
+<meta name="description"
+content="Welcome to Eknath World — Study Material, Creative Prompts, Projects and Technology.">
 
-        header {
-            padding: 20px;
-            text-align: center;
-            background: #121a30;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
 
-        header h2,
-        .about h2 {
-            color: #55d6ff;
-        }
+:root {
+    --bg: #070b16;
+    --card: rgba(19, 28, 51, 0.78);
+    --cyan: #55d6ff;
+    --purple: #a879ff;
+    --text: #f4f7ff;
+    --muted: #b7c1d9;
+}
 
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
 
-        .profile-photo {
-            width: 190px;
-            height: 190px;
-            object-fit: cover;
-            object-position: center 25%;
-            border-radius: 50%;
-            border: 4px solid #55d6ff;
-            margin-bottom: 25px;
-            box-shadow: 0 0 25px #55d6ff44;
-        }
+/* Animated 3D-style background */
 
-        .hero h1 {
-            font-size: clamp(30px, 7vw, 46px);
-            margin-bottom: 12px;
-        }
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 15% 20%,
+        #17345d 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 70%,
+        #35205d 0%, transparent 42%),
+        #070b16;
+}
 
-        .hero h1 span {
-            color: #55d6ff;
-        }
+.glow {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.48;
+    animation: float 10s ease-in-out infinite alternate;
+}
 
-        .hero p {
-            color: #c4cbe0;
-            max-width: 550px;
-            margin-bottom: 25px;
-        }
+.glow-one {
+    background: #00c8ff;
+    top: 10%;
+    left: -90px;
+}
 
-        .button {
-            display: inline-block;
-            background: #55d6ff;
-            color: #0b1020;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 6px;
-        }
+.glow-two {
+    background: #8c42ff;
+    right: -90px;
+    top: 50%;
+    animation-delay: -5s;
+}
 
-        .whatsapp {
-            background: #25D366;
-            color: #071b0e;
-        }
+@keyframes float {
+    from {
+        transform: translate3d(0, 0, 0) scale(0.9);
+    }
+    to {
+        transform: translate3d(45px, -40px, 0) scale(1.2);
+    }
+}
 
-        .about {
-            background: #121a30;
-            padding: 45px 20px;
-            text-align: center;
-        }
+/* Navigation */
 
-        .about h2 {
-            margin-bottom: 15px;
-            font-size: 30px;
-        }
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 14px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    background: rgba(7, 11, 22, 0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid #ffffff12;
+}
 
-        .about p {
-            max-width: 550px;
-            margin: auto;
-            color: #c4cbe0;
-        }
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--cyan);
+}
 
-        footer {
-            text-align: center;
-            padding: 22px;
-            color: #aab3cc;
-            font-size: 14px;
-        }
-    </style>
+nav a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    margin: 4px 7px;
+}
+
+nav a:hover {
+    color: var(--cyan);
+}
+
+/* Hero */
+
+.hero {
+    min-height: 88vh;
+    padding: 70px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.badge {
+    border: 1px solid #55d6ff55;
+    color: var(--cyan);
+    padding: 6px 15px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    background: #55d6ff0c;
+    font-size: 13px;
+}
+
+.hero h1 {
+    font-size: clamp(36px, 8vw, 65px);
+    line-height: 1.2;
+    margin-bottom: 18px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #55d6ff, #b28cff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 600px;
+    color: var(--muted);
+    margin-bottom: 25px;
+}
+
+.profile-photo {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+    object-position: center 25%;
+    border-radius: 50%;
+    border: 3px solid var(--cyan);
+    padding: 5px;
+    margin: 15px 0 25px;
+    box-shadow: 0 0 35px #55d6ff45;
+    animation: photoFloat 5s ease-in-out infinite;
+}
+
+@keyframes photoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+}
+
+/* Buttons */
+
+.button {
+    display: inline-block;
+    padding: 11px 20px;
+    margin: 5px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #06101d;
+    background: var(--cyan);
+    border: none;
+    cursor: pointer;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px #55d6ff35;
+}
+
+.whatsapp {
+    background: #25d366;
+}
+
+.secondary {
+    color: var(--text);
+    background: #ffffff0d;
+    border: 1px solid #ffffff28;
+}
+
+/* Sections */
+
+section.content {
+    padding: 70px 7%;
+    scroll-margin-top: 70px;
+}
+
+.section-title {
+    font-size: clamp(27px, 5vw, 36px);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.section-title span {
+    color: var(--cyan);
+}
+
+.section-description {
+    color: var(--muted);
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 35px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid #ffffff13;
+    border-radius: 17px;
+    backdrop-filter: blur(12px);
+    transition: transform .25s, border-color .25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #55d6ff80;
+}
+
+.card .icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    color: var(--cyan);
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.card a {
+    color: var(--cyan);
+    text-decoration: none;
+}
+
+.skill {
+    display: inline-block;
+    padding: 8px 13px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #55d6ff44;
+    background: #55d6ff0d;
+    color: var(--text);
+}
+
+.prompt {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--muted);
+    font-size: 13px;
+    margin: 12px 0;
+}
+
+.contact-box {
+    text-align: center;
+    max-width: 700px;
+    margin: auto;
+    padding: 35px 20px;
+    background: var(--card);
+    border: 1px solid #ffffff15;
+    border-radius: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 15px;
+    color: var(--muted);
+    border-top: 1px solid #ffffff12;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        justify-content: center;
+    }
+
+    nav .links {
+        text-align: center;
+    }
+
+    section.content {
+        padding: 55px 18px;
+    }
+
+    .hero {
+        min-height: 80vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <header>
-        <h2>MY PORTFOLIO</h2>
-    </header>
+<div class="background" aria-hidden="true">
+    <div class="glow glow-one"></div>
+    <div class="glow glow-two"></div>
+</div>
 
-    <section class="hero">
+<nav>
+    <div class="logo">Eknath World.</div>
 
-        <img
-            src="file_0000000094408246a6c0826290d5ebef.png"
-            alt="Eknath's Profile Photo"
-            class="profile-photo"
-        >
+    <div class="links">
+        <a href="#home">होम</a>
+        <a href="#about">मेरे बारे में</a>
+        <a href="#skills">स्किल्स</a>
+        <a href="#study">पढ़ाई</a>
+        <a href="#prompts">प्रॉम्प्ट्स</a>
+        <a href="#contact">संपर्क</a>
+    </div>
+</nav>
 
-        <h1>Hello, I'm <span>Eknath</span></h1>
+<header class="hero" id="home">
 
-        <p>
-            I'm a beginner learning web development.
-            I love technology, creativity and building new things.
-        </p>
+    <div class="badge">WELCOME TO MY DIGITAL WORLD</div>
 
-        <a href="#about" class="button">Discover More</a>
+    <h1>
+        Welcome to<br>
+        <span class="gradient-text">Eknath World</span>
+    </h1>
+
+    <p>
+        सीखो, क्रिएट करो और आगे बढ़ो।
+        टेक्नोलॉजी, पढ़ाई और क्रिएटिव आइडियाज की
+        एक नई डिजिटल दुनिया में आपका स्वागत है।
+    </p>
+
+    <img
+        src="file_0000000094408246a6c0826290d5ebef.png"
+        alt="Eknath की प्रोफाइल फोटो"
+        class="profile-photo"
+    >
+
+    <h2>नमस्ते, मैं <span class="gradient-text">Eknath</span> हूँ।</h2>
+
+    <p>Web Development सीख रहा हूँ और नए डिजिटल प्रोजेक्ट बना रहा हूँ।</p>
+
+    <div>
+        <a href="#about" class="button">मेरे बारे में जानें</a>
 
         <a
             href="https://wa.me/918459965864?text=Hello%20Eknath"
             class="button whatsapp"
             target="_blank"
             rel="noopener noreferrer"
-        >
-            Contact Me on WhatsApp
-        </a>
+        >WhatsApp पर संपर्क करें</a>
+    </div>
 
-    </section>
+</header>
 
-    <section class="about" id="about">
-        <h2>About Me</h2>
+<section class="content" id="about">
+    <h2 class="section-title">मेरे <span>बारे में</span></h2>
+
+    <p class="section-description">
+        मेरी यात्रा, मेरी रुचियाँ और मेरे लक्ष्य।
+    </p>
+
+    <div class="card">
+        <h3>नमस्ते! 👋</h3>
 
         <p>
-            Welcome to my personal website!
-            I'm learning HTML and CSS to become a web developer.
-            This is my personal portfolio project.
+            मेरा नाम Eknath है। मुझे टेक्नोलॉजी, वेबसाइट डिजाइन,
+            डिजिटल क्रिएटिविटी और नई चीजें सीखना पसंद है।
+            मैं HTML और CSS सीखकर अपने प्रोजेक्ट बना रहा हूँ।
+            इस वेबसाइट का उद्देश्य अपने काम को दिखाना और
+            उपयोगी जानकारी दूसरों तक पहुँचाना है।
         </p>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        My Portfolio | Created with HTML & CSS
-    </footer>
+<section class="content" id="skills">
+    <h2 class="section-title">मेरी <span>Skills</span></h2>
+
+    <p class="section-description">
+        जिन कौशलों को मैं सीख रहा हूँ और आगे विकसित करना चाहता हूँ।
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">🌐</div>
+            <h3>HTML</h3>
+            <p>वेबसाइट का स्ट्रक्चर बनाना।</p>
+            <span class="skill">Learning</span>
+        </div>
+
+        <div class="card">
+            <div class="icon">🎨</div>
+            <h3>CSS</h3>
+            <p>रंग, लेआउट और वेबसाइट का डिज़ाइन।</p>
+            <span class="skill">Learning</span>
+        </div>
+
+        <div class="card">
+            <div class="icon">💡</div>
+            <h3>Creative Ideas</h3>
+            <p>नए डिजिटल आइडियाज और प्रोजेक्ट्स पर काम।</p>
+            <span class="skill">Exploring</span>
+        </div>
+    </div>
+</section>
+
+<section class="content" id="projects">
+    <h2 class="section-title">मेरे <span>Projects</span></h2>
+
+    <p class="section-description">
+        मेरे बनाए हुए डिजिटल प्रोजेक्ट यहाँ दिखेंगे।
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">💻</div>
+            <h3>Eknath World</h3>
+            <p>मेरा व्यक्तिगत पोर्टफोलियो और डिजिटल रिसोर्स वेबसाइट।</p>
+            <a href="#home">वर्तमान वेबसाइट देखें ↑</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">🚀</div>
+            <h3>आने वाले प्रोजेक्ट्स</h3>
+            <p>नए प्रोजेक्ट तैयार होने पर यहाँ जोड़े जाएँगे।</p>
+        </div>
+    </div>
+</section>
+
+<section class="content" id="study">
+    <h2 class="section-title">Study <span>Material</span></h2>
+
+    <p class="section-description">
+        विद्यार्थियों के लिए उपयोगी नोट्स और सीखने के संसाधन।
+        उपलब्ध सामग्री धीरे-धीरे यहाँ जोड़ी जाएगी।
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">📘</div>
+            <h3>Study Notes</h3>
+            <p>यहाँ विषयवार नोट्स और पढ़ाई की सामग्री जोड़ी जाएगी।</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📄</div>
+            <h3>PDF Library</h3>
+            <p>यहाँ उपयोगी PDF और डाउनलोड लिंक जोड़े जाएँगे।</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">💻</div>
+            <h3>Computer Learning</h3>
+            <p>कंप्यूटर और वेब डेवलपमेंट सीखने के संसाधन।</p>
+        </div>
+    </div>
+</section>
+
+<section class="content" id="prompts">
+    <h2 class="section-title">Viral <span>Prompts</span></h2>
+
+    <p class="section-description">
+        क्रिएटिव प्रॉम्प्ट्स को एक क्लिक में कॉपी करो।
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">📸</div>
+            <h3>Natural DSLR Enhancement</h3>
+
+            <div class="prompt" id="prompt1">Enhance this photo into a realistic professional DSLR photograph. Preserve the original subject, face, objects, composition and details. Improve natural lighting, exposure, contrast and colors. Keep the result realistic and avoid artificial effects.</div>
+
+            <button class="button" onclick="copyPrompt('prompt1', this)">
+                Copy Prompt
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="icon">🌅</div>
+            <h3>Golden Hour</h3>
+
+            <div class="prompt" id="prompt2">Enhance the original photograph with natural golden-hour sunset lighting, warm sunlight, realistic shadows and cinematic depth. Preserve the original subject and scene. Avoid oversaturation, fake blur and AI-looking details.</div>
+
+            <button class="button" onclick="copyPrompt('prompt2', this)">
+                Copy Prompt
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="content" id="gallery">
+    <h2 class="section-title">Creative <span>Gallery</span></h2>
+
+    <p class="section-description">
+        मेरी फोटोग्राफी, एडिट्स और क्रिएटिव काम यहाँ दिखेंगे।
+    </p>
+
+    <div class="card">
+        <div class="icon">🖼️</div>
+        <h3>Photo Gallery</h3>
+        <p>नई तस्वीरें और क्रिएटिव प्रोजेक्ट्स जल्द जोड़े जाएँगे।</p>
+    </div>
+</section>
+
+<section class="content" id="reels">
+    <h2 class="section-title">Reels & <span>Videos</span></h2>
+
+    <p class="section-description">
+        उपयोगी वीडियो और Instagram Reels के लिंक यहाँ जोड़े जाएँगे।
+    </p>
+
+    <div class="card">
+        <div class="icon">🎬</div>
+        <h3>Video Collection</h3>
+        <p>अभी वीडियो लिंक जोड़े नहीं गए हैं।</p>
+    </div>
+</section>
+
+<section class="content" id="contact">
+    <h2 class="section-title">Connect <span>With Me</span></h2>
+
+    <p class="section-description">
+        किसी प्रोजेक्ट या वेबसाइट के बारे में संपर्क करें।
+    </p>
+
+    <div class="contact-box">
+        <h3>Let's Connect! 🤝</h3>
+
+        <p style="color:var(--muted); margin:12px 0 20px">
+            अपने आइडियाज और सवालों के साथ संपर्क कर सकते हैं।
+        </p>
+
+        <a
+            href="https://wa.me/918459965864?text=Hello%20Eknath"
+            class="button whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >WhatsApp</a>
+
+        <!-- अपना Instagram प्रोफाइल लिंक मिलने पर यहाँ जोड़ेंगे -->
+        <a href="#contact" class="button secondary">
+            Instagram लिंक जल्द आएगा
+        </a>
+    </div>
+</section>
+
+<footer>
+    © 2026 Eknath World. Made with HTML & CSS.
+</footer>
+
+<script>
+function copyPrompt(id, button) {
+    const text = document.getElementById(id).innerText;
+
+    function copied() {
+        const original = button.innerText;
+        button.innerText = "Copied! ✓";
+
+        setTimeout(() => {
+            button.innerText = original;
+        }, 1600);
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(copied)
+            .catch(() => fallbackCopy(text, button));
+    } else {
+        fallbackCopy(text, button);
+    }
+}
+
+function fallbackCopy(text, button) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+        document.execCommand("copy");
+        button.innerText = "Copied! ✓";
+        setTimeout(() => {
+            button.innerText = "Copy Prompt";
+        }, 1600);
+    } catch (error) {
+        alert("Prompt कॉपी नहीं हुआ। टेक्स्ट को दबाकर कॉपी करें।");
+    }
+
+    area.remove();
+}
+</script>
 
 </body>
 </html>
