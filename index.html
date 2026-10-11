@@ -684,9 +684,15 @@ window.adminLogin = async function () {
       return;
     }
 
-    message.textContent = 'Login सफल हुआ! अब Admin की पहचान जाँची जा रही है।';
+    const ADMIN_UID = 'bf6d9d6b-6400-4ae6-9b2e-d8836e8a0da9';
 
-    console.log('Supabase login successful:', data.user.id);
+if (data.user.id !== ADMIN_UID) {
+  await supabase.auth.signOut();
+  message.textContent = 'यह अकाउंट Admin के लिए अधिकृत नहीं है।';
+  return;
+}
+
+message.textContent = 'Admin Login सफल! पहचान सत्यापित हो गई।';
   } catch (error) {
     message.textContent = 'समस्या हुई। इंटरनेट और Supabase सेटिंग जाँचें।';
   }
