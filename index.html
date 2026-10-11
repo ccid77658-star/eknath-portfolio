@@ -653,8 +653,7 @@ function fallbackCopy(text, button) {
 
   <p id="admin-message"></p>
 </section>
-</body>
-    <script type="module">
+<script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const supabase = createClient(
@@ -692,5 +691,7 @@ window.adminLogin = async function () {
     message.textContent = 'समस्या हुई। इंटरनेट और Supabase सेटिंग जाँचें।';
   }
 };
-    </script>
+</script>
+</body>
 </html>
+
