@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eknath | My Portfolio</title>
+    <title>Eknath | Portfolio</title>
 
     <style>
         * {
@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
             background: #0b1020;
             color: white;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         header {
@@ -25,22 +25,34 @@
             background: #121a30;
         }
 
-        header h2 {
+        header h2,
+        .about h2 {
             color: #55d6ff;
         }
 
         .hero {
-            min-height: 65vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 35px 20px;
+            padding: 40px 20px;
+        }
+
+        .profile-photo {
+            width: 190px;
+            height: 190px;
+            object-fit: cover;
+            object-position: center 25%;
+            border-radius: 50%;
+            border: 4px solid #55d6ff;
+            margin-bottom: 25px;
+            box-shadow: 0 0 25px #55d6ff44;
         }
 
         .hero h1 {
-            font-size: 38px;
+            font-size: clamp(30px, 7vw, 46px);
             margin-bottom: 12px;
         }
 
@@ -50,8 +62,8 @@
 
         .hero p {
             color: #c4cbe0;
-            max-width: 500px;
-            margin-bottom: 24px;
+            max-width: 550px;
+            margin-bottom: 25px;
         }
 
         .button {
@@ -62,17 +74,23 @@
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            margin: 6px;
+        }
+
+        .whatsapp {
+            background: #25D366;
+            color: #071b0e;
         }
 
         .about {
             background: #121a30;
-            padding: 35px 20px;
+            padding: 45px 20px;
             text-align: center;
         }
 
         .about h2 {
-            color: #55d6ff;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            font-size: 30px;
         }
 
         .about p {
@@ -83,7 +101,7 @@
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 22px;
             color: #aab3cc;
             font-size: 14px;
         }
@@ -97,6 +115,13 @@
     </header>
 
     <section class="hero">
+
+        <img
+            src="profile.jpg"
+            alt="Eknath's Profile Photo"
+            class="profile-photo"
+        >
+
         <h1>Hello, I'm <span>Eknath</span></h1>
 
         <p>
@@ -105,6 +130,16 @@
         </p>
 
         <a href="#about" class="button">Discover More</a>
+
+        <a
+            href="https://wa.me/918459965864?text=Hello%20Eknath"
+            class="button whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Contact Me on WhatsApp
+        </a>
+
     </section>
 
     <section class="about" id="about">
@@ -113,12 +148,12 @@
         <p>
             Welcome to my personal website!
             I'm learning HTML and CSS to become a web developer.
-            This is my first professional portfolio project.
+            This is my personal portfolio project.
         </p>
     </section>
 
     <footer>
-        My First Website | Created with HTML & CSS
+        My Portfolio | Created with HTML & CSS
     </footer>
 
 </body>
