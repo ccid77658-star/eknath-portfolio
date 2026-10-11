@@ -653,6 +653,47 @@ function fallbackCopy(text, button) {
 
   <p id="admin-message"></p>
 </section>
+    <!-- Eknath World Upload Panel -->
+<section id="upload-panel" style="display:none;max-width:600px;margin:25px auto;padding:20px;background:#151525;color:white;border-radius:15px;font-family:Arial,sans-serif;">
+
+  <h2>🚀 Eknath World Admin</h2>
+
+  <label>क्या जोड़ना है?</label>
+  <select id="content-type" style="width:100%;padding:12px;margin:10px 0;">
+    <option value="prompt">Prompts</option>
+    <option value="photo">Photos</option>
+    <option value="video">Videos</option>
+    <option value="study">Study Material / PDF</option>
+    <option value="other">Other — Apps, Links और कुछ भी</option>
+  </select>
+
+  <label>Title / नाम</label>
+  <input id="content-title" placeholder="नाम लिखो"
+    style="width:100%;padding:12px;box-sizing:border-box;margin:10px 0;">
+
+  <label>Description / जानकारी</label>
+  <textarea id="content-body" placeholder="जानकारी लिखो"
+    style="width:100%;height:100px;padding:12px;box-sizing:border-box;margin:10px 0;"></textarea>
+
+  <label>Link / URL</label>
+  <input id="content-link" type="url" placeholder="https://..."
+    style="width:100%;padding:12px;box-sizing:border-box;margin:10px 0;">
+
+  <label>फोटो, वीडियो या PDF चुनो</label>
+  <input id="content-file" type="file" accept="image/*,video/*,.pdf"
+    style="width:100%;margin:10px 0;">
+
+  <button id="upload-button" type="button"
+    style="width:100%;padding:13px;background:#00c9c8;border:0;border-radius:8px;">
+    Save Content
+  </button>
+
+  <p id="upload-message"></p>
+
+  <h3>मेरी जोड़ी गई सामग्री</h3>
+  <div id="saved-content">अभी कोई सामग्री लोड नहीं हुई।</div>
+
+</section>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
