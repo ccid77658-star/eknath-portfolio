@@ -654,4 +654,43 @@ function fallbackCopy(text, button) {
   <p id="admin-message"></p>
 </section>
 </body>
+    <script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const supabase = createClient(
+  'https://izqoxqoypouaeqjmrqoi.supabase.co',
+  'sb_publishable_G1levIcsKEwMwBMDhGMNqw_G9PSdDhv'
+);
+
+window.adminLogin = async function () {
+  const email = document.getElementById('admin-email').value.trim();
+  const password = document.getElementById('admin-password').value;
+  const message = document.getElementById('admin-message');
+
+  if (!email || !password) {
+    message.textContent = 'Email और Password दोनों भरें।';
+    return;
+  }
+
+  message.textContent = 'लॉगिन हो रहा है...';
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      message.textContent = 'Login नहीं हुआ: ' + error.message;
+      return;
+    }
+
+    message.textContent = 'Login सफल हुआ! अब Admin की पहचान जाँची जा रही है।';
+
+    console.log('Supabase login successful:', data.user.id);
+  } catch (error) {
+    message.textContent = 'समस्या हुई। इंटरनेट और Supabase सेटिंग जाँचें।';
+  }
+};
+    </script>
 </html>
