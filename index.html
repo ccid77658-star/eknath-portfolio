@@ -1109,6 +1109,26 @@ section.classList.remove("ew-cinematic-open");
 void section.offsetWidth;
 section.classList.add("ew-cinematic-open");
 
+      if (category === "prompts") {
+  const cards = section.querySelectorAll(".card");
+  cards.forEach((card, index) => {
+    card.style.animation = "none";
+    card.style.opacity = "0";
+    card.style.transform = "translateY(20px)";
+    card.style.transition = "none";
+
+    void card.offsetWidth;
+
+    card.style.transition =
+      `opacity 0.5s ease ${index * 0.12}s, transform 0.5s ease ${index * 0.12}s`;
+
+    requestAnimationFrame(() => {
+      card.style.opacity = "1";
+      card.style.transform = "translateY(0)";
+    });
+  });
+      }
+      
     if (category === "admin") {
       const upload = document.getElementById("upload-panel");
       if (upload && window.ewAdminLoggedIn) upload.style.display = "";
