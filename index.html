@@ -736,8 +736,10 @@ if (data.user.id !== ADMIN_UID) {
 message.textContent = 'Admin Login सफल! पहचान सत्यापित हो गई।';
       
       document.getElementById('upload-panel').style.display = 'block';
-      
-  } catch (error) {
+    
+      await loadSavedContent();
+  
+ } catch (error) {
       
     message.textContent = 'समस्या हुई। इंटरनेट और Supabase सेटिंग जाँचें।';
   }
