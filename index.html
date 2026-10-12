@@ -396,6 +396,29 @@ footer {
         grid-template-columns: 1fr;
     }
         }
+    /* Cinematic Section Animation */
+@keyframes ewCinematicOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(25px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.ew-cinematic-open {
+  animation: ewCinematicOpen 0.65s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ew-cinematic-open {
+    animation: none;
+  }
+}
 </style>
 </head>
 
