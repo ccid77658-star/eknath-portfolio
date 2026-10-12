@@ -525,6 +525,9 @@ footer {
             </button>
         </div>
     </div>
+
+    <!-- Admin Panel से सेव किए गए Prompts यहाँ दिखेंगे -->
+    <div id="dynamic-prompts" class="grid"></div>
 </section>
 
 <section class="content" id="gallery">
@@ -970,8 +973,8 @@ savedContent.addEventListener('click', async function (event) {
         const position = url.pathname.indexOf(marker);
 
         if (position !== -1) {
-          const path = decodeURIComponent(
-            url.pathname.slice(position + marker.length)
+           path = decodeURIComponent(
+            url.pathname.slice(constposition + marker.length)
           );
 
           const { error: storageError } = await supabase.storage
@@ -996,6 +999,78 @@ savedContent.addEventListener('click', async function (event) {
   }
 });
 
+</script>
+    <script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const supabase = createClient(
+  'https://izqoxqoypouaeqjmrqoi.supabase.co',
+  'sb_publishable_G1levIcsKEwMwBMDhGMNqw_G9PSdDhv'
+);
+
+async function loadPublicPrompts() {
+  const container = document.getElementById('dynamic-prompts');
+
+  if (!container) return;
+
+  container.textContent = 'Prompts लोड हो रहे हैं...';
+
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('id, title, content_type, body')
+    .eq('content_type', 'prompt')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    container.textContent = 'Prompts लोड नहीं हुए। कृपया बाद में कोशिश करें।';
+    console.error('Public prompts error:', error.message);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.textContent = 'अभी कोई नया Prompt उपलब्ध नहीं है।';
+    return;
+  }
+
+  container.replaceChildren();
+
+  data.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const icon = document.createElement('div');
+    icon.className = 'icon';
+    icon.textContent = '🔥';
+
+    const heading = document.createElement('h3');
+    heading.textContent = item.title;
+
+    const prompt = document.createElement('div');
+    prompt.className = 'prompt';
+    prompt.textContent = item.body || '';
+
+    const button = document.createElement('button');
+    button.className = 'button';
+    button.textContent = 'Copy Prompt';
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(item.body || '');
+        button.textContent = 'Copied! ✅';
+        setTimeout(() => {
+          button.textContent = 'Copy Prompt';
+        }, 1500);
+      } catch {
+        window.prompt('Prompt कॉपी करने के लिए इसे चुनें:', item.body || '');
+      }
+    });
+
+    card.append(icon, heading, prompt, button);
+    container.appendChild(card);
+  });
+}
+
+loadPublicPrompts();
 </script>
 </body>
 </html>
