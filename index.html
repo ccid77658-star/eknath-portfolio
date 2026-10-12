@@ -1020,7 +1020,8 @@ async function loadPublicPrompts() {
     .select('id, title, content_type, body')
     .eq('content_type', 'prompt')
     .order('created_at', { ascending: false });
-
+  console.log('Saved prompts:', data);
+  console.log('Supabase error:', error);
   if (error) {
     container.textContent = 'Prompts लोड नहीं हुए। कृपया बाद में कोशिश करें।';
     console.error('Public prompts error:', error.message);
