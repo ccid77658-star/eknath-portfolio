@@ -766,6 +766,190 @@ function fallbackCopy(text, button) {
     area.remove();
 }
 </script>
+    <script>
+(function () {
+  const sectionIds = [
+    "about", "skills", "projects",
+    "study", "prompts", "gallery", "reels", "contact"
+  ];
+
+  function getOrCreateTools() {
+    let tools = document.getElementById("tools");
+    if (!tools) {
+      tools = document.createElement("section");
+      tools.id = "tools";
+      tools.className = "content";
+      tools.innerHTML = `
+        <h2 class="section-title">AI Tools <span>& Apps</span></h2>
+        <p class="section-description">AI Tools और Apps की जानकारी यहाँ मिलेगी।</p>
+        <div class="grid">
+          <div class="card">
+            <h3>AI Tools & Apps</h3>
+            <p>जल्द ही यहाँ AI tools और apps जोड़े जाएँगे।</p>
+          </div>
+        </div>`;
+      document.getElementById("contact")?.before(tools);
+    }
+    return tools;
+  }
+
+  function hideAllViews() {
+    document.querySelectorAll("section.content").forEach(section => {
+      section.style.display = "none";
+    });
+
+    sectionIds.forEach(id => {
+      const section = document.getElementById(id);
+      if (section) section.style.display = "none";
+    });
+
+    const admin = document.getElementById("admin-panel");
+    const upload = document.getElementById("upload-panel");
+    if (admin) admin.style.display = "none";
+    if (upload) upload.style.display = "none";
+
+    const hero = document.querySelector("header");
+    if (hero) hero.style.display = "none";
+  }
+
+  function addControls(section) {
+    if (!section || section.querySelector(".ew-view-controls")) return;
+
+    const controls = document.createElement("div");
+    controls.className = "ew-view-controls";
+    controls.style.cssText = "max-width:900px;margin:15px auto;padding:0 15px;";
+
+    const back = document.createElement("button");
+    back.type = "button";
+    back.textContent = "← Home पर वापस";
+    back.style.cssText =
+      "padding:10px 16px;margin-bottom:12px;border:1px solid #00d9ff;" +
+      "border-radius:8px;background:#071a35;color:white;cursor:pointer;";
+    back.addEventListener("click", window.returnHome);
+
+    const search = document.createElement("input");
+    search.type = "search";
+    search.placeholder = "🔍 इस पेज में खोजें...";
+    search.className = "category-search";
+    search.style.cssText = "display:block;width:100%;box-sizing:border-box;";
+
+    search.addEventListener("input", function () {
+      const query = search.value.trim().toLowerCase();
+      section.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(query)
+          ? ""
+          : "none";
+      });
+    });
+
+    controls.append(back, search);
+    section.prepend(controls);
+  }
+
+  window.returnHome = function () {
+    hideAllViews();
+
+    const hero = document.querySelector("header");
+    const home = document.getElementById("category-home");
+
+    if (hero) hero.style.display = "";
+    if (home) home.style.display = "";
+
+    document.querySelectorAll(".category-card").forEach(card => {
+      card.style.display = "";
+    });
+
+    const mainSearch = document.getElementById("main-category-search");
+    if (mainSearch) mainSearch.value = "";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  window.openCategory = function (category) {
+    hideAllViews();
+
+    const aliases = {
+      prompts: "prompts",
+      gallery: "gallery",
+      reels: "reels",
+      study: "study",
+      tools: "tools",
+      admin: "admin-panel",
+      about: "about",
+      skills: "skills",
+      projects: "projects",
+      contact: "contact"
+    };
+
+    const targetId = aliases[category];
+    const section = targetId ? document.getElementById(targetId) : null;
+
+    if (!section) {
+      window.returnHome();
+      return;
+    }
+
+    section.style.display = "";
+
+    if (category === "admin") {
+      const upload = document.getElementById("upload-panel");
+      if (upload && window.ewAdminLoggedIn) upload.style.display = "";
+    } else {
+      addControls(section);
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    getOrCreateTools();
+
+    const mainSearch = document.getElementById("main-category-search");
+    if (mainSearch) {
+      mainSearch.addEventListener("input", function () {
+        const query = mainSearch.value.trim().toLowerCase();
+        document.querySelectorAll(".category-card").forEach(card => {
+          card.style.display = card.textContent.toLowerCase().includes(query)
+            ? ""
+            : "none";
+        });
+      });
+    }
+
+    document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+      link.addEventListener("click", function (event) {
+        const id = this.getAttribute("href").slice(1);
+        const categories = {
+          home: null,
+          about: "about",
+          skills: "skills",
+          study: "study",
+          prompts: "prompts",
+          contact: "contact",
+          gallery: "gallery",
+          reels: "reels"
+        };
+
+        if (id in categories) {
+          event.preventDefault();
+          if (id === "home") {
+            window.returnHome();
+          } else {
+            window.openCategory(categories[id]);
+          }
+        }
+      });
+    });
+
+    window.returnHome();
+  });
+
+  if (document.readyState !== "loading") {
+    getOrCreateTools();
+    window.returnHome();
+  }
+})();
+        </script>
 <!-- Eknath World Admin Panel -->
 <section id="admin-panel" style="max-width:400px;margin:30px auto;padding:20px;background:#151525;color:white;border-radius:15px;font-family:Arial,sans-serif;">
   <h2>Eknath World Admin</h2>
