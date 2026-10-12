@@ -1623,6 +1623,138 @@ async function loadPublicPrompts() {
 
 loadPublicPrompts();
 </script>
+    <!-- Eknath World: Public Content -->
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const supabase = createClient(
+  'https://izqoxqoypouaeqjmrqoi.supabase.co',
+  'sb_publishable_G1levIcsKEwMwBMDhGMNqw_G9PSdDhv'
+);
+
+function createCard(item, type) {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const title = document.createElement('h3');
+  title.textContent = item.title || 'Untitled';
+  card.appendChild(title);
+
+  if (item.body) {
+    const description = document.createElement('p');
+    description.textContent = item.body;
+    card.appendChild(description);
+  }
+
+  if (item.file_url) {
+    if (type === 'photo') {
+      const image = document.createElement('img');
+      image.src = item.file_url;
+      image.alt = item.title || 'Photo';
+      image.loading = 'lazy';
+      image.style.cssText =
+        'width:100%;height:auto;max-height:420px;object-fit:contain;border-radius:12px;margin-top:12px;';
+      card.appendChild(image);
+    } else if (type === 'video') {
+      const video = document.createElement('video');
+      video.src = item.file_url;
+      video.controls = true;
+      video.style.cssText =
+        'width:100%;max-height:420px;border-radius:12px;margin-top:12px;';
+      card.appendChild(video);
+    } else {
+      const link = document.createElement('a');
+      link.href = item.file_url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.className = 'button';
+      link.textContent = type === 'study'
+        ? '📄 Open / Download'
+        : '🚀 Open App / Link';
+      card.appendChild(link);
+    }
+  }
+
+  return card;
+}
+
+async function loadSection(type, sectionId, gridId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  let grid = document.getElementById(gridId);
+
+  if (!grid) {
+    grid = document.createElement('div');
+    grid.id = gridId;
+    grid.className = 'grid';
+    section.appendChild(grid);
+  }
+
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('id, title, content_type, file_url, body, created_at')
+    .eq('content_type', type)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(type + ' load error:', error.message);
+    return;
+  }
+
+  grid.replaceChildren();
+
+  (data || []).forEach(item => {
+    grid.appendChild(createCard(item, type));
+  });
+}
+
+async function loadApps() {
+  const section = document.getElementById('tools');
+  if (!section) return;
+
+  let grid = document.getElementById('dynamic-apps');
+
+  if (!grid) {
+    grid = document.createElement('div');
+    grid.id = 'dynamic-apps';
+    grid.className = 'grid';
+    section.appendChild(grid);
+  }
+
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('id, title, content_type, file_url, body, created_at')
+    .eq('content_type', 'other')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Apps load error:', error.message);
+    return;
+  }
+
+  grid.replaceChildren();
+
+  (data || []).forEach(item => {
+    grid.appendChild(createCard(item, 'other'));
+  });
+}
+
+async function loadPublicContent() {
+  await Promise.all([
+    loadSection('photo', 'gallery', 'dynamic-photos'),
+    loadSection('video', 'reels', 'dynamic-videos'),
+    loadSection('study', 'study', 'dynamic-study'),
+    loadApps()
+  ]);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadPublicContent);
+} else {
+  loadPublicContent();
+}
+</script>
 </body>
 </html>
 
