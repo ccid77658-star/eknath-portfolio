@@ -981,7 +981,10 @@ function fallbackCopy(text, button) {
       return;
     }
 
-    section.style.display = "";
+    section.style.display = "block";
+section.classList.remove("ew-cinematic-open");
+void section.offsetWidth;
+section.classList.add("ew-cinematic-open");
 
     if (category === "admin") {
       const upload = document.getElementById("upload-panel");
