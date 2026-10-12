@@ -742,6 +742,258 @@ message.textContent = 'Admin Login सफल! पहचान सत्याप
     message.textContent = 'समस्या हुई। इंटरनेट और Supabase सेटिंग जाँचें।';
   }
 };
+// ===== EK NATH WORLD CONTENT MANAGER =====
+
+const uploadButton = document.getElementById('upload-button');
+const uploadMessage = document.getElementById('upload-message');
+const savedContent = document.getElementById('saved-content');
+
+// HTML text safe बनाना
+function safeText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+// Content सेव करना
+uploadButton.addEventListener('click', async function () {
+  const title = document.getElementById('content-title').value.trim();
+  const type = document.getElementById('content-type').value;
+  const body = document.getElementById('content-body').value.trim();
+  const link = document.getElementById('content-link').value.trim();
+  const fileInput = document.getElementById('content-file');
+  const file = fileInput.files[0];
+
+  if (!title) {
+    uploadMessage.textContent = 'पहले Title लिखो।';
+    return;
+  }
+
+  const { data: sessionData } = await supabase.auth.getSession();
+
+  if (!sessionData.session) {
+    uploadMessage.textContent = 'पहले Admin Login करो।';
+    return;
+  }
+
+  uploadButton.disabled = true;
+  uploadMessage.textContent = 'कंटेंट सेव हो रहा है...';
+
+  let fileUrl = link;
+  let uploadedPath = null;
+
+  try {
+    // अगर कोई फाइल चुनी गई है तो Storage में अपलोड करो
+    if (file) {
+      const allowedTypes = [
+        'prompt', 'photo', 'video', 'study', 'other'
+      ];
+
+      if (!allowedTypes.includes(type)) {
+        throw new Error('Content Type सही नहीं है।');
+      }
+
+      if (file.size > 50 * 1024 * 1024) {
+        throw new Error('फाइल 50 MB से बड़ी है।');
+      }
+
+      const extension = file.name.includes('.')
+        ? file.name.split('.').pop().toLowerCase()
+        : 'bin';
+
+      const safeExtension = /^[a-z0-9]+$/.test(extension)
+        ? extension
+        : 'bin';
+
+      uploadedPath =
+        sessionData.session.user.id + '/' +
+        Date.now() + '-' +
+        crypto.randomUUID() + '.' +
+        safeExtension;
+
+      const { error: uploadError } = await supabase.storage
+        .from('site-files')
+        .upload(uploadedPath, file, {
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicData } = supabase.storage
+        .from('site-files')
+        .getPublicUrl(uploadedPath);
+
+      fileUrl = publicData.publicUrl;
+    }
+
+    // डेटाबेस में कंटेंट सेव करो
+    const { error: saveError } = await supabase
+      .from('site_content')
+      .insert({
+        title: title,
+        content_type: type,
+        file_url: fileUrl || null,
+        body: body || null
+      });
+
+    if (saveError) {
+      // Database सेव न हो तो अपलोड की गई फाइल हटाने की कोशिश
+      if (uploadedPath) {
+        await supabase.storage
+          .from('site-files')
+          .remove([uploadedPath]);
+      }
+
+      throw saveError;
+    }
+
+    uploadMessage.textContent = '✅ कंटेंट सफलतापूर्वक सेव हो गया!';
+
+    document.getElementById('content-title').value = '';
+    document.getElementById('content-body').value = '';
+    document.getElementById('content-link').value = '';
+    fileInput.value = '';
+
+    await loadSavedContent();
+
+  } catch (error) {
+    console.error('Save Content Error:', error);
+    uploadMessage.textContent =
+      '❌ सेव नहीं हुआ: ' + (error.message || 'अज्ञात समस्या');
+  } finally {
+    uploadButton.disabled = false;
+  }
+});
+
+
+// सेव किए गए कंटेंट की सूची
+async function loadSavedContent() {
+  savedContent.textContent = 'कंटेंट लोड हो रहा है...';
+
+  const { data, error } = await supabase
+    .from('site_content')
+    .select('id, title, content_type, file_url, body, created_at')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    savedContent.textContent =
+      'कंटेंट लोड नहीं हुआ: ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    savedContent.textContent = 'अभी कोई सामग्री सेव नहीं है।';
+    return;
+  }
+
+  savedContent.innerHTML = data.map(item => `
+    <div style="
+      background:#202039;
+      padding:15px;
+      margin:12px 0;
+      border-radius:10px;
+      overflow-wrap:anywhere;
+    ">
+      <h4>${safeText(item.title)}</h4>
+      <p>Type: ${safeText(item.content_type)}</p>
+      <p>${safeText(item.body || '')}</p>
+
+      ${
+        item.file_url
+          ? `<p><a href="${safeText(item.file_url)}"
+               target="_blank" rel="noopener noreferrer"
+               style="color:#55d6ff">Open File / Link</a></p>`
+          : ''
+      }
+
+      <button
+        type="button"
+        data-delete-id="${safeText(item.id)}"
+        style="
+          margin-top:10px;
+          padding:9px 14px;
+          background:#e5484d;
+          color:white;
+          border:0;
+          border-radius:7px;
+        ">
+        Delete
+      </button>
+    </div>
+  `).join('');
+}
+
+
+// कंटेंट डिलीट करना
+savedContent.addEventListener('click', async function (event) {
+  const button = event.target.closest('[data-delete-id]');
+  if (!button) return;
+
+  const id = button.dataset.deleteId;
+
+  if (!confirm('क्या तुम इस कंटेंट को डिलीट करना चाहते हो?')) {
+    return;
+  }
+
+  button.disabled = true;
+
+  try {
+    // पहले रिकॉर्ड की जानकारी लो
+    const { data: item, error: readError } = await supabase
+      .from('site_content')
+      .select('id, file_url')
+      .eq('id', id)
+      .single();
+
+    if (readError) throw readError;
+
+    // Database से रिकॉर्ड हटाओ
+    const { error: deleteError } = await supabase
+      .from('site_content')
+      .delete()
+      .eq('id', id);
+
+    if (deleteError) throw deleteError;
+
+    // अगर फाइल हमारे Storage में है तो उसे भी हटाओ
+    if (item.file_url) {
+      const marker = '/storage/v1/object/public/site-files/';
+
+      try {
+        const url = new URL(item.file_url);
+        const position = url.pathname.indexOf(marker);
+
+        if (position !== -1) {
+          const path = decodeURIComponent(
+            url.pathname.slice(position + marker.length)
+          );
+
+          const { error: storageError } = await supabase.storage
+            .from('site-files')
+            .remove([path]);
+
+          if (storageError) {
+            console.warn('Storage file delete failed:', storageError.message);
+          }
+        }
+      } catch (fileError) {
+        console.warn('Storage path read failed:', fileError);
+      }
+    }
+
+    await loadSavedContent();
+
+  } catch (error) {
+    console.error('Delete Error:', error);
+    alert('डिलीट नहीं हुआ: ' + error.message);
+    button.disabled = false;
+  }
+});
+
 </script>
 </body>
 </html>
