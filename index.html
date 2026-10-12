@@ -331,6 +331,71 @@ footer {
         transition: none !important;
     }
 }
+    /* Eknath World Categories */
+.category-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 15px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.category-card {
+    background: linear-gradient(145deg, #102b4e, #071525);
+    border: 1px solid #00d9ff55;
+    border-radius: 16px;
+    padding: 22px 10px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.category-card:active {
+    transform: scale(0.97);
+}
+
+.category-card .category-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.category-card h3 {
+    color: #00d9ff;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.category-card p {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 5px 0 0;
+}
+
+.category-search {
+    width: 90%;
+    max-width: 600px;
+    display: block;
+    margin: 18px auto;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #00d9ff;
+    background: #0b1728;
+    color: white;
+    box-sizing: border-box;
+}
+
+.category-search::placeholder {
+    color: #aab8c9;
+}
+
+@media (max-width: 350px) {
+    .category-container {
+        grid-template-columns: 1fr;
+    }
+        }
 </style>
 </head>
 
@@ -391,7 +456,70 @@ footer {
     </div>
 
 </header>
+<!-- Eknath World Categories -->
+<section id="category-home" class="content">
 
+    <h2 class="section-title">
+        Explore <span>Eknath World</span>
+    </h2>
+
+    <p class="section-description">
+        अपनी पसंद की Category चुनें।
+    </p>
+
+    <input
+        type="search"
+        id="main-category-search"
+        class="category-search"
+        placeholder="🔍 Category खोजें..."
+    >
+
+    <div class="category-container">
+
+        <div class="category-card" data-category="prompts"
+             onclick="openCategory('prompts')">
+            <span class="category-icon">🔥</span>
+            <h3>AI Prompts</h3>
+            <p>AI Photo Editing Prompts</p>
+        </div>
+
+        <div class="category-card" data-category="gallery"
+             onclick="openCategory('gallery')">
+            <span class="category-icon">🖼️</span>
+            <h3>Photo Gallery</h3>
+            <p>Photos और Edits</p>
+        </div>
+
+        <div class="category-card" data-category="reels"
+             onclick="openCategory('reels')">
+            <span class="category-icon">🎬</span>
+            <h3>Videos & Reels</h3>
+            <p>Videos और Shorts</p>
+        </div>
+
+        <div class="category-card" data-category="study"
+             onclick="openCategory('study')">
+            <span class="category-icon">📚</span>
+            <h3>Study Material</h3>
+            <p>Notes और PDFs</p>
+        </div>
+
+        <div class="category-card" data-category="tools"
+             onclick="openCategory('tools')">
+            <span class="category-icon">🛠️</span>
+            <h3>AI Tools & Apps</h3>
+            <p>Useful Tools</p>
+        </div>
+
+        <div class="category-card" data-category="admin"
+             onclick="openCategory('admin')">
+            <span class="category-icon">🔐</span>
+            <h3>Admin Panel</h3>
+            <p>Manage Content</p>
+        </div>
+
+    </div>
+</section>
 <section class="content" id="about">
     <h2 class="section-title">मेरे <span>बारे में</span></h2>
 
